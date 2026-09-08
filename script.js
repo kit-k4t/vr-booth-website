@@ -25,17 +25,24 @@ revealElements.forEach(el => revealObserver.observe(el));
 
 function playInline(videoId, placeholder) {
     const video = document.getElementById(videoId);
+
     if (video) {
+        document.querySelectorAll('video').forEach(otherVideo => {
+            if (otherVideo !== video) {
+                otherVideo.pause();
+            }
+        });
+
         placeholder.classList.add('hidden');
         video.setAttribute('controls', 'true');
-        
+
         video.currentTime = 0;
 
         if (video.requestFullscreen) {
             video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) { 
+        } else if (video.webkitRequestFullscreen) {
             video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) { 
+        } else if (video.msRequestFullscreen) {
             video.msRequestFullscreen();
         }
 
