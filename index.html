@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U-Week VR Booth | Game Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="announcement-bar">
+        <div class="announcement-content">
+            <span class="announcement-text">3 DAYS ONLY &mdash; September 9-11, 2026</span>
+            <span class="announcement-separator">|</span>
+            <span class="announcement-sub">8:00 AM - 5:00 PM</span>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo">VR BOOTH</div>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#games">Games</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">PLAY • EXPLORE • EXPERIENCE</div>
+            <h1>Step Into Another <span>Reality</span></h1>
+            <p>Put on the headset, pick a game, and see what VR is all about!</p>
+        </div>
+    </section>
+
+    <section id="games">
+        <div class="section-header reveal">
+            <div class="section-label">Our Lineup</div>
+            <h2>Featured VR Games</h2>
+            <p>Hand-picked experiences that showcase the best of virtual reality</p>
+        </div>
+
+        <div class="games-grid">
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-beat-saber" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Release%20Trailer%20Beat%20Saber%20-%20Beat%20Saber%20Official%20(1080p).mp4#t=5" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-beat-saber', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag">Action / Rhythm</span>
+                    <h3>Beat Saber</h3>
+                    <p>Slash through beats in this adrenaline-pumping rhythm game. Armed with dual lightsabers, you slice through incoming blocks to the beat of epic music.</p>
+                </div>
+            </div>
+
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-fnaf-sl" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Five%20Nights%20at%20Freddy's%20Sister%20Location%20VR%20-%20Launch%20Trailer%20-%20Yu%20Ro%20(1080p).mp4#t=55" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-fnaf-sl', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag" style="background: rgba(184, 41, 221, 0.1); color: var(--accent-purple);">Horror / Survival</span>
+                    <h3>FNAF Sister Location VR</h3>
+                    <p>Survive the night at Circus Baby's Entertainment and Rental. Creepy animatronics, tight corridors, and jump scares around every corner.</p>
+                </div>
+            </div>
+
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-fnaf-ucn" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Ultimate%20Custom%20Night%20VR%20-%20Launch%20Trailer(720P_60FPS).mp4#t=5" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-fnaf-ucn', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag" style="background: rgba(255, 0, 110, 0.1); color: var(--accent-pink);">Horror / Strategy</span>
+                    <h3>FNAF Ultimate Custom Night VR</h3>
+                    <p>Customize your own nightmare. Pick which animatronics hunt you and set their difficulty. How many nights can you survive?</p>
+                </div>
+            </div>
+
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-until-you-fall" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Until%20You%20Fall%20-%20Launch%20Trailer%20PS%20VR%20-%20PlayStation%20(1080p).mp4#t=5" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-until-you-fall', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag">Roguelite / Action</span>
+                    <h3>Until You Fall</h3>
+                    <p>A neon-drenched sword fighting roguelite. Block, parry, and strike your way through corrupted knights in a synthwave fantasy world.</p>
+                </div>
+            </div>
+
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-space-pirate" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Space%20Pirate%20Trainer%20-%20Official%20Trailer%20-%20I-Illusions%20(720p).mp4#t=1" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-space-pirate', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag" style="background: rgba(184, 41, 221, 0.1); color: var(--accent-purple);">Action / Arcade</span>
+                    <h3>Space Pirate Trainer</h3>
+                    <p>Classic VR wave shooter. Dual pistols, shields, and dodge mechanics as you fight off waves of droids in a space station arena.</p>
+                </div>
+            </div>
+
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-propagation" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Propagation%20VR%20-%20Trailer%20-%20WanadevStudio%20(720p,%20h264).mp4#t=5" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-propagation', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag" style="background: rgba(255, 0, 110, 0.1); color: var(--accent-pink);">Horror / Survival</span>
+                    <h3>Propagation VR</h3>
+                    <p>Zombie apocalypse survival. Barricade yourself in, manage limited ammo, and hold off waves of undead clawing at the doors.</p>
+                </div>
+            </div>
+
+            <div class="game-card reveal">
+                <div class="game-media">
+                    <video id="vid-crisis-brigade" loop playsinline preload="metadata">
+                        <source src="https://mzhbxzlzrohtpuxmfofa.supabase.co/storage/v1/object/public/videos/Crisis%20Brigade%202%20Reloaded%20Launch%20Trailer%20_%20VIVEPORT.mp4#t=1" type="video/mp4">
+                    </video>
+                    <div class="video-placeholder" onclick="playInline('vid-crisis-brigade', this)">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span class="game-tag">FPS / Action</span>
+                    <h3>Crisis Brigade 2 Reloaded</h3>
+                    <p>Cover-based arcade shooter. Duck behind cover, reload, and take down terrorists through intense mission-based campaigns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="section-header reveal">
+            <div class="section-label">Pricing</div>
+            <h2>Session Rates</h2>
+            <p>Per round or unlimited time. Your choice.</p>
+        </div>
+
+        <div class="pricing-container reveal">
+            <div class="pricing-card">
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Session Type</th>
+                            <th>Details</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1 Round / Try</strong><br><small style="color: var(--text-secondary);">Single game session</small></td>
+                            <td>1 Round</td>
+                            <td><span class="price-tag">&#8369;20</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>3 Rounds / Tries</strong><br><small style="color: var(--text-secondary);">Best value for quick play</small></td>
+                            <td>3 Rounds</td>
+                            <td><span class="price-tag">&#8369;50</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>5 Rounds / Tries</strong><br><small style="color: var(--text-secondary);">Play multiple games</small></td>
+                            <td>5 Rounds</td>
+                            <td><span class="price-tag">&#8369;75</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>30 Minutes Unlimited</strong><br><small style="color: var(--text-secondary);">Play as many rounds as you can</small></td>
+                            <td>30 Minutes</td>
+                            <td><span class="price-tag">&#8369;90</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1 Hour Unlimited</strong><br><small style="color: var(--text-secondary);">Full VR experience</small></td>
+                            <td>1 Hour</td>
+                            <td><span class="price-tag">&#8369;150</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="price-note">
+                    <p><strong>Leaderboard Challenge:</strong> Top scorers on select games win prizes. Ask at the booth for details.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" style="padding: 4rem 5%;">
+        <div class="section-header reveal">
+            <div class="section-label">About</div>
+            <h2>Come Visit Us!</h2>
+            <p>A student-run VR gaming booth hosted with ISATech</p>
+        </div>
+        <div style="max-width: 600px; margin: 0 auto; text-align: center;" class="reveal">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">
+                This booth offers a selection of virtual reality games for visitors to try on campus. 
+                It provides a setup for experiencing VR hardware firsthand and observing how gameplay 
+                differs from playing on a standard screen.
+            </p>
+            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--glass); border: 1px solid var(--border); border-radius: 16px;">
+                <p style="color: var(--accent-cyan); font-weight: 600; font-size: 1.1rem;">Booth Location</p>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Main Campus Grounds &mdash; New Site<br>CHERC (Culture Heritage and Educational Research Center) Building</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>University Week 2026</p>
+        <p class="uni-name">Iloilo Science and Technology University</p>
+    </footer>
+
+    <p class="kitkat-ticker">
+        <span>made with luv from kitkat uwu</span>
+    </p>
+
+    <script src="script.js"></script>
+</body>
+</html>
