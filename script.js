@@ -64,3 +64,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+function updateNavPosition() {
+    const announcement = document.querySelector('.announcement-bar');
+    const nav = document.querySelector('nav');
+
+    if (announcement && nav) {
+        nav.style.top = `${announcement.offsetHeight}px`;
+    }
+}
+
+window.addEventListener('load', updateNavPosition);
+window.addEventListener('resize', updateNavPosition);
