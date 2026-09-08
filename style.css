@@ -245,7 +245,7 @@ nav {
     letter-spacing: -1px;
 }
 
-.hero h1 span {
+.hero h1 span, .kitkat-ticker span {
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
