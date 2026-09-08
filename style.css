@@ -586,10 +586,6 @@ footer .uni-name {
 }
 
 @media (max-width: 768px) {
-    nav {
-        top: 60px;
-    }
-
     .nav-links {
         display: none;
         position: absolute;
@@ -613,7 +609,7 @@ footer .uni-name {
     }
 
     .hero {
-        padding: 14rem 5% 3rem;
+        padding: 12rem 5% 3rem;
     }
 
     .games-grid {
