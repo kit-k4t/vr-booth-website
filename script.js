@@ -70,9 +70,22 @@ function updateNavPosition() {
     const nav = document.querySelector('nav');
 
     if (announcement && nav) {
-        nav.style.top = `${announcement.offsetHeight}px`;
+        nav.style.top = `${announcement.getBoundingClientRect().height}px`;
     }
 }
 
-window.addEventListener('load', updateNavPosition);
+window.addEventListener('DOMContentLoaded', () => {
+    const announcement = document.querySelector('.announcement-bar');
+
+    if (announcement) {
+        updateNavPosition();
+
+        const observer = new ResizeObserver(() => {
+            updateNavPosition();
+        });
+
+        observer.observe(announcement);
+    }
+});
+
 window.addEventListener('resize', updateNavPosition);
