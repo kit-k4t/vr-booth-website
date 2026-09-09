@@ -585,7 +585,7 @@ footer .uni-name {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .nav-links {
         display: none;
         position: absolute;
@@ -693,4 +693,177 @@ footer .uni-name {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent-cyan);
+}
+
+.leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.leaderboard-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+}
+
+.leaderboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.leaderboard-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 240, 255, 0.2);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+}
+
+.leaderboard-card:hover::before {
+    opacity: 1;
+}
+
+.leaderboard-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.leaderboard-header h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard-tag {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: rgba(0, 240, 255, 0.1);
+    color: var(--accent-cyan);
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-cyan) transparent;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 6px;
+    background: transparent;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 6px;
+    background: transparent;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 10px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.6rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.leaderboard-table td {
+    padding: 0.8rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+}
+
+.leaderboard-table tr:last-child td {
+    border-bottom: none;
+}
+
+.leaderboard-table .score {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-align: right;
+}
+
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.rank-1 .rank-badge {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+}
+
+.rank-2 .rank-badge {
+    background: rgba(192, 192, 192, 0.15);
+    border-color: rgba(192, 192, 192, 0.4);
+    color: #c0c0c0;
+}
+
+.rank-3 .rank-badge {
+    background: rgba(205, 127, 50, 0.15);
+    border-color: rgba(205, 127, 50, 0.4);
+    color: #cd7f32;
+}
+
+.rank-1 td {
+    color: var(--text-primary);
+    font-weight: 600;
 }
