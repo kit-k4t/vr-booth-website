@@ -9,43 +9,27 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 });
 
 const revealElements = document.querySelectorAll('.reveal');
-
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
         }
     });
-}, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-});
-
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 revealElements.forEach(el => revealObserver.observe(el));
 
 function playInline(videoId, placeholder) {
     const video = document.getElementById(videoId);
-
     if (video) {
         document.querySelectorAll('video').forEach(otherVideo => {
-            if (otherVideo !== video) {
-                otherVideo.pause();
-            }
+            if (otherVideo !== video) otherVideo.pause();
         });
-
         placeholder.classList.add('hidden');
         video.setAttribute('controls', 'true');
-
         video.currentTime = 0;
-
-        if (video.requestFullscreen) {
-            video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
-            video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) {
-            video.msRequestFullscreen();
-        }
-
+        if (video.requestFullscreen) video.requestFullscreen();
+        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+        else if (video.msRequestFullscreen) video.msRequestFullscreen();
         video.play().catch(err => console.log("Play error:", err));
     }
 }
@@ -64,10 +48,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
 });
@@ -75,7 +56,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 function updateNavPosition() {
     const announcement = document.querySelector('.announcement-bar');
     const nav = document.querySelector('nav');
-
     if (announcement && nav) {
         nav.style.top = `${announcement.getBoundingClientRect().height}px`;
     }
@@ -83,16 +63,20 @@ function updateNavPosition() {
 
 window.addEventListener('DOMContentLoaded', () => {
     const announcement = document.querySelector('.announcement-bar');
-
     if (announcement) {
         updateNavPosition();
-
-        const observer = new ResizeObserver(() => {
-            updateNavPosition();
-        });
-
+        const observer = new ResizeObserver(() => updateNavPosition());
         observer.observe(announcement);
     }
 });
-
 window.addEventListener('resize', updateNavPosition);
+
+function setLeaderboardLabels() {
+    document.querySelectorAll('.leaderboard-table tbody tr').forEach(tr => {
+        const ths = tr.closest('table').querySelectorAll('thead th');
+        tr.querySelectorAll('td').forEach((td, i) => {
+            if (ths[i]) td.setAttribute('data-label', ths[i].textContent.trim());
+        });
+    });
+}
+setLeaderboardLabels();
