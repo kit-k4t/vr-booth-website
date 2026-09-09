@@ -231,7 +231,7 @@
                 </table>
 
                 <div class="price-note">
-                    <p><strong>Leaderboard Challenge:</strong> Top scorers on select games win prizes. Ask at the booth for details.</p>
+                    <p><strong>Leaderboard Challenge:</strong> Top scorers on select games win prizes! Ask at the booth for details.</p>
                 </div>
             </div>
         </div>
@@ -265,10 +265,10 @@
                         <tbody>
                             <tr class="rank-1">
                                 <td><span class="rank-badge">1</span></td>
-                                <td></td>
-                                <td class="score"></td>
-                                <td></td>
-                                <td></td>
+                                <td>Renz</td>
+                                <td class="score">27,743</td>
+                                <td>Beat Saber</td>
+                                <td>.85</td>
                             </tr>
                             <tr class="rank-2">
                                 <td><span class="rank-badge">2</span></td>
@@ -303,7 +303,7 @@
                 </div>
             </div>
 
-            <div class="leaderboard-card reveal">
+            <div class="leaderboard-card reveal space-pirate-leaderboard">
                 <div class="leaderboard-header">
                     <h3>Space Pirate Trainer</h3>
                     <span class="leaderboard-tag" style="background: rgba(184, 41, 221, 0.1); color: var(--accent-purple);">Action / Arcade</span>
@@ -349,48 +349,72 @@
     </section>
 
 
-    <section class="queue-section">
+    <section id="queue" class="queue-section">
         <div class="section-header reveal">
             <div class="section-label">Queue</div>
             <h2>Join The Line</h2>
-            <p>We'll call you when it's your turn.</p>
+            <p>Enter your name, pick your game, and we'll call you when it's your turn.</p>
         </div>
-        <div class="queue-card queue-list-card">
-            <div class="queue-list-header">
-                <h3>Current Queue</h3>
-                <span class="queue-count">0 waiting</span>
+
+        <div class="queue-grid reveal">
+            <div class="queue-card queue-join-card">
+                <h3>Join The Queue</h3>
+
+                <form id="queueForm" class="queue-form">
+                    <div class="form-group">
+                        <label for="queueName">Name / Nickname</label>
+                        <input type="text" id="queueName" placeholder="e.g. kitkat" maxlength="24" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="queuePass">Session Pass</label>
+                        <select id="queuePass" required>
+                            <option value="rounds">1 Round (&#8369;20)</option>
+                            <option value="rounds">3 Rounds (&#8369;50)</option>
+                            <option value="rounds">5 Rounds (&#8369;75)</option>
+                            <option value="30min">30 Minutes Unlimited (&#8369;90)</option>
+                            <option value="1hour">1 Hour Unlimited (&#8369;150)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="queueGame">Game</label>
+                        <select id="queueGame" required>
+                            <option value="Beat Saber">Beat Saber</option>
+                            <option value="Until You Fall">Until You Fall</option>
+                            <option value="Space Pirate Trainer">Space Pirate Trainer</option>
+                            <option value="Crisis Brigade 2">Crisis Brigade 2 Reloaded</option>
+                            <option value="FNAF Sister Location VR">FNAF Sister Location VR</option>
+                            <option value="FNAF Ultimate Custom Night VR">FNAF UCN VR</option>
+                            <option value="Propagation VR">Propagation VR</option>
+                        </select>
+                        <small id="passHint" class="form-hint"></small>
+                    </div>
+
+                    <button type="submit" class="queue-btn">Join Queue</button>
+                </form>
+
             </div>
 
-            <div class="now-playing">
-                <span class="np-label">Now Playing</span>
-                <span class="np-name">Yohan</span>
+            <div class="queue-card queue-list-card">
+                <div class="queue-list-header">
+                    <h3>Current Line</h3>
+                    <span class="queue-count" id="queueCount">0 waiting</span>
+                </div>
+
+                <div id="nowPlaying" class="now-playing">
+                    <span class="np-label">Now Playing</span>
+                    <span class="np-name" id="npName">Nobody yet</span>
+                </div>
+
+                <ul id="queueList" class="queue-list"></ul>
+
+                <div id="queueEmpty" class="queue-empty">The queue is empty. Be the first!</div>
+
+                <div class="queue-controls">
+                    <button type="button" class="queue-btn ghost" id="completeBtn">&#10003; Complete Session &amp; Call Next</button>
+                </div>
             </div>
-
-            <ul class="queue-list">
-                <li class="queue-item">
-                    <span class="queue-num">1</span>
-                    <div class="queue-info">
-                        <div class="queue-name"></div>
-                        <div class="queue-meta"></div>
-                    </div>
-                </li>
-                <li class="queue-item">
-                    <span class="queue-num">2</span>
-                    <div class="queue-info">
-                        <div class="queue-name"></div>
-                        <div class="queue-meta"></div>
-                    </div>
-                </li>
-                <li class="queue-item">
-                    <span class="queue-num">3</span>
-                    <div class="queue-info">
-                        <div class="queue-name"></div>
-                        <div class="queue-meta"></div>
-                    </div>
-                </li>
-            </ul>
-
-            <div class="queue-empty"></div>
         </div>
     </section>
 
@@ -419,7 +443,7 @@
     </footer>
 
     <p class="kitkat-ticker">
-        <span>made with luv from kitkat uwu</span>
+        <span>uwu <3</span>
     </p>
 
     <script src="script.js"></script>
