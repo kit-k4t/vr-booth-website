@@ -828,7 +828,7 @@ footer .uni-name {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
     color: var(--accent-cyan);
-    text-align: right;
+    text-align: left;
 }
 
 .rank-badge {
