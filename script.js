@@ -72,11 +72,146 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', updateNavPosition);
 
 function setLeaderboardLabels() {
-    document.querySelectorAll('.leaderboard-table tbody tr').forEach(tr => {
-        const ths = tr.closest('table').querySelectorAll('thead th');
-        tr.querySelectorAll('td').forEach((td, i) => {
-            if (ths[i]) td.setAttribute('data-label', ths[i].textContent.trim());
+    document.querySelectorAll('.leaderboard-table').forEach(table => {
+        const ths = [...table.querySelectorAll('thead th')];
+        table.querySelectorAll('tbody tr').forEach(tr => {
+            tr.querySelectorAll('td').forEach((td, i) => {
+                if (!ths[i]) return;
+                td.setAttribute('data-label', ths[i].textContent.trim());
+                if (!td.querySelector('.rank-badge') && !td.querySelector('.val')) {
+                    const span = document.createElement('span');
+                    span.className = 'val';
+                    while (td.firstChild) span.appendChild(td.firstChild);
+                    td.appendChild(span);
+                }
+            });
         });
     });
 }
 setLeaderboardLabels();
+
+const LONG_GAMES = [
+    "FNAF Sister Location VR",
+    "FNAF Ultimate Custom Night VR",
+    "Propagation VR"
+];
+
+const LS_KEY = 'vr_booth_queue';
+
+function loadQueue() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; }
+}
+function saveQueue(q) { localStorage.setItem(LS_KEY, JSON.stringify(q)); }
+
+function renderQueue() {
+    const q = loadQueue();
+    const npEl = document.getElementById('npName');
+    const listEl = document.getElementById('queueList');
+    const emptyEl = document.getElementById('queueEmpty');
+    const countEl = document.getElementById('queueCount');
+
+    if (q.length === 0) {
+        npEl.textContent = 'Nobody yet';
+        listEl.innerHTML = '';
+        emptyEl.style.display = 'block';
+        countEl.textContent = '0 waiting';
+        return;
+    }
+
+    const now = q[0];
+    npEl.textContent = `${now.name} — ${now.game} (${now.passLabel})`;
+
+    listEl.innerHTML = '';
+    q.slice(1).forEach((item, idx) => {
+        const li = document.createElement('li');
+        li.className = 'queue-item';
+        li.innerHTML = `
+            <span class="queue-num">${idx + 1}</span>
+            <div class="queue-info">
+                <div class="queue-name">${escapeHtml(item.name)}</div>
+                <div class="queue-meta">${escapeHtml(item.game)} &bull; ${escapeHtml(item.passLabel)}</div>
+            </div>
+            <button class="queue-remove" data-id="${item.id}" title="Remove">&times;</button>
+        `;
+        listEl.appendChild(li);
+    });
+
+    emptyEl.style.display = 'none';
+    countEl.textContent = `${q.length - 1} waiting`;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function addToQueue(name, game, pass) {
+    const q = loadQueue();
+    const passLabel = pass === '30min' ? '30 Min' : pass === '1hour' ? '1 Hour' : 'Rounds';
+    q.push({ id: Date.now() + Math.random(), name, game, pass, passLabel });
+    saveQueue(q);
+    renderQueue();
+}
+
+function removeFromQueue(id) {
+    let q = loadQueue();
+    q = q.filter(item => item.id != id);
+    saveQueue(q);
+    renderQueue();
+}
+
+function completeAndCallNext() {
+    let q = loadQueue();
+    if (q.length === 0) return;
+    q.shift();
+    saveQueue(q);
+    renderQueue();
+}
+
+const queueForm = document.getElementById('queueForm');
+const passSelect = document.getElementById('queuePass');
+const gameSelect = document.getElementById('queueGame');
+const passHint = document.getElementById('passHint');
+
+function checkPassGame() {
+    const pass = passSelect.value;
+    const game = gameSelect.value;
+    const isLong = LONG_GAMES.includes(game);
+    if (isLong && pass === 'rounds') {
+        passHint.textContent = 'This game requires a 30 Min or 1 Hour pass.';
+        return false;
+    } else {
+        passHint.textContent = '';
+        return true;
+    }
+}
+
+if (passSelect && gameSelect) {
+    passSelect.addEventListener('change', checkPassGame);
+    gameSelect.addEventListener('change', checkPassGame);
+}
+
+if (queueForm) {
+    queueForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!checkPassGame()) return;
+        const name = document.getElementById('queueName').value.trim();
+        const game = gameSelect.value;
+        const pass = passSelect.value;
+        if (!name) return;
+        addToQueue(name, game, pass);
+        queueForm.reset();
+        checkPassGame();
+    });
+}
+
+document.getElementById('completeBtn')?.addEventListener('click', completeAndCallNext);
+
+document.getElementById('queueList')?.addEventListener('click', (e) => {
+    if (e.target.classList.contains('queue-remove')) {
+        removeFromQueue(e.target.dataset.id);
+    }
+});
+
+renderQueue();
