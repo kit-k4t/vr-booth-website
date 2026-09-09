@@ -9,6 +9,7 @@
     <link href="style.css" rel="stylesheet">
     <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div class="bg-grid"></div>
@@ -31,6 +32,7 @@
             <li><a href="#games">Games</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#leaderboard">Leaderboard</a></li>
+            <li><a href="#queue">Queue</a></li>
             <li><a href="#about">About</a></li>
         </ul>
     </nav>
@@ -83,6 +85,7 @@
                 <div class="game-info">
                     <span class="game-tag" style="background: rgba(184, 41, 221, 0.1); color: var(--accent-purple);">Horror / Survival</span>
                     <h3>FNAF Sister Location VR</h3>
+                    <span class="game-badge-long">30 Min+ Pass Only</span>
                     <p>Survive the night at Circus Baby's Entertainment and Rental. Creepy animatronics, tight corridors, and jump scares around every corner.</p>
                 </div>
             </div>
@@ -119,6 +122,7 @@
                 <div class="game-info">
                     <span class="game-tag">Roguelite / Action</span>
                     <h3>Until You Fall</h3>
+                    <span class="game-badge-long">30 Min+ Pass Only</span>
                     <p>A neon-drenched sword fighting roguelite. Block, parry, and strike your way through corrupted knights in a synthwave fantasy world.</p>
                 </div>
             </div>
@@ -155,6 +159,7 @@
                 <div class="game-info">
                     <span class="game-tag" style="background: rgba(255, 0, 110, 0.1); color: var(--accent-pink);">Horror / Survival</span>
                     <h3>Propagation VR</h3>
+                    <span class="game-badge-long">30 Min+ Pass Only</span>
                     <p>Zombie apocalypse survival. Barricade yourself in, manage limited ammo, and hold off waves of undead clawing at the doors.</p>
                 </div>
             </div>
@@ -208,7 +213,7 @@
                             <td><span class="price-tag">&#8369;50</span></td>
                         </tr>
                         <tr>
-                            <td><strong>5 Rounds / Tries</strong><br><small style="color: var(--text-secondary);">Play multiple games</small></td>
+                            <td><strong>5 Rounds / Tries</strong><br><small style="color: var(--text-secondary);">Go all in on one game</small></td>
                             <td>5 Rounds</td>
                             <td><span class="price-tag">&#8369;75</span></td>
                         </tr>
@@ -340,6 +345,52 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </section>
+
+
+    <section class="queue-section">
+        <div class="section-header reveal">
+            <div class="section-label">Queue</div>
+            <h2>Join The Line</h2>
+            <p>We'll call you when it's your turn.</p>
+        </div>
+        <div class="queue-card queue-list-card">
+            <div class="queue-list-header">
+                <h3>Current Queue</h3>
+                <span class="queue-count">0 waiting</span>
+            </div>
+
+            <div class="now-playing">
+                <span class="np-label">Now Playing</span>
+                <span class="np-name">Nobody yet</span>
+            </div>
+
+            <ul class="queue-list">
+                <li class="queue-item">
+                    <span class="queue-num">1</span>
+                    <div class="queue-info">
+                        <div class="queue-name"></div>
+                        <div class="queue-meta"></div>
+                    </div>
+                </li>
+                <li class="queue-item">
+                    <span class="queue-num">2</span>
+                    <div class="queue-info">
+                        <div class="queue-name"></div>
+                        <div class="queue-meta"></div>
+                    </div>
+                </li>
+                <li class="queue-item">
+                    <span class="queue-num">3</span>
+                    <div class="queue-info">
+                        <div class="queue-name"></div>
+                        <div class="queue-meta"></div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="queue-empty">The queue is empty. Be the first!</div>
         </div>
     </section>
 
