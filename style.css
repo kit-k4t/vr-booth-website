@@ -697,8 +697,9 @@ footer .uni-name {
 
 .leaderboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
     gap: 2rem;
+    width: 100%;
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -711,6 +712,9 @@ footer .uni-name {
     position: relative;
     overflow: hidden;
     transition: all 0.4s;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .leaderboard-card::before {
@@ -798,8 +802,10 @@ footer .uni-name {
 
 .leaderboard-table {
     width: 100%;
-    min-width: 500px;
+    min-width: 0;
+    max-width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .leaderboard-table th {
@@ -829,6 +835,14 @@ footer .uni-name {
     font-weight: 600;
     color: var(--accent-cyan);
     text-align: left;
+}
+
+.beat-saber-leaderboard {
+    overflow-x: auto;
+}
+
+.beat-saber-leaderboard .leaderboard-table {
+    min-width: 500px;
 }
 
 .rank-badge {
@@ -869,50 +883,77 @@ footer .uni-name {
 }
 
 @media (max-width: 480px) {
-    .leaderboard-table,
-    .leaderboard-table thead,
-    .leaderboard-table tbody,
-    .leaderboard-table th,
-    .leaderboard-table td,
-    .leaderboard-table tr {
-        display: block;
+    .leaderboard-table {
+        width: 100%;
+        min-width: 0;
     }
+
     .leaderboard-table thead {
         display: none;
     }
+
+    .leaderboard-table tbody,
+    .leaderboard-table tr {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     .leaderboard-table tr {
         margin-bottom: 1rem;
         padding: 0.75rem;
-        background: rgba(255,255,255,0.02);
+        background: rgba(255, 255, 255, 0.02);
         border: 1px solid var(--border);
         border-radius: 12px;
     }
+
     .leaderboard-table td {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
         padding: 0.5rem 0;
         border: none;
-        border-bottom: 1px solid rgba(255,255,255,0.04);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         font-size: 0.9rem;
     }
+
     .leaderboard-table td:last-child {
         border-bottom: none;
     }
+
     .leaderboard-table td::before {
         content: attr(data-label);
+        flex: 0 0 auto;
         font-weight: 600;
         color: var(--text-secondary);
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
+
     .leaderboard-table .score {
+        margin-left: auto;
         text-align: right;
         color: var(--accent-cyan);
     }
-    .table-container {
+
+    .beat-saber-leaderboard {
         overflow-x: hidden;
+    }
+
+    .beat-saber-leaderboard .leaderboard-table {
+        min-width: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .table-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 }
 
