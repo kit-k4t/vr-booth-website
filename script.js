@@ -16,6 +16,7 @@ const revealObserver = new IntersectionObserver((entries) => {
         }
     });
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
 revealElements.forEach(el => revealObserver.observe(el));
 
 function playInline(videoId, placeholder) {
@@ -24,18 +25,22 @@ function playInline(videoId, placeholder) {
         document.querySelectorAll('video').forEach(otherVideo => {
             if (otherVideo !== video) otherVideo.pause();
         });
+
         placeholder.classList.add('hidden');
         video.setAttribute('controls', 'true');
         video.currentTime = 0;
+
         if (video.requestFullscreen) video.requestFullscreen();
         else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
         else if (video.msRequestFullscreen) video.msRequestFullscreen();
+
         video.play().catch(err => console.log("Play error:", err));
     }
 }
 
 window.addEventListener('scroll', () => {
     const nav = document.querySelector('nav');
+
     if (window.scrollY > 50) {
         nav.style.background = 'rgba(10, 10, 15, 0.95)';
     } else {
@@ -46,9 +51,14 @@ window.addEventListener('scroll', () => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
+
         const target = document.querySelector(this.getAttribute('href'));
+
         if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
     });
 });
@@ -56,6 +66,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 function updateNavPosition() {
     const announcement = document.querySelector('.announcement-bar');
     const nav = document.querySelector('nav');
+
     if (announcement && nav) {
         nav.style.top = `${announcement.getBoundingClientRect().height}px`;
     }
@@ -63,32 +74,58 @@ function updateNavPosition() {
 
 window.addEventListener('DOMContentLoaded', () => {
     const announcement = document.querySelector('.announcement-bar');
+
     if (announcement) {
         updateNavPosition();
+
         const observer = new ResizeObserver(() => updateNavPosition());
         observer.observe(announcement);
     }
 });
-window.addEventListener('resize', updateNavPosition);
 
 function setLeaderboardLabels() {
     document.querySelectorAll('.leaderboard-table').forEach(table => {
         const ths = [...table.querySelectorAll('thead th')];
+
         table.querySelectorAll('tbody tr').forEach(tr => {
             tr.querySelectorAll('td').forEach((td, i) => {
                 if (!ths[i]) return;
-                td.setAttribute('data-label', ths[i].textContent.trim());
-                if (!td.querySelector('.rank-badge') && !td.querySelector('.val')) {
+
+                td.setAttribute(
+                    'data-label',
+                    ths[i].textContent.trim()
+                );
+
+                if (
+                    !td.querySelector('.rank-badge') &&
+                    !td.querySelector('.val')
+                ) {
                     const span = document.createElement('span');
                     span.className = 'val';
-                    while (td.firstChild) span.appendChild(td.firstChild);
+
+                    while (td.firstChild) {
+                        span.appendChild(td.firstChild);
+                    }
+
                     td.appendChild(span);
                 }
             });
         });
     });
 }
+
 setLeaderboardLabels();
+
+let supabaseClient = null;
+
+try {
+    supabaseClient = window.supabase.createClient(
+        'https://nbryhdguniflsntyobac.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5icnloZGd1bmlmbHNudHlvYmFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NzczOTksImV4cCI6MjEwNDU1MzM5OX0.5nhTK57SAvizDCgCOO1JEAk04CUR3bxIr-50UolRf-U'
+    );
+} catch (err) {
+    console.error('Supabase failed to initialize:', err);
+}
 
 const LONG_GAMES = [
     "FNAF Sister Location VR",
@@ -96,15 +133,45 @@ const LONG_GAMES = [
     "Propagation VR"
 ];
 
-const LS_KEY = 'vr_booth_queue';
+let queueCache = [];
 
-function loadQueue() {
-    try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; }
+
+async function refreshQueue() {
+    if (!supabaseClient) return;
+
+    const { data, error } = await supabaseClient
+        .from('queue')
+        .select('*')
+        .order('created_at', { ascending: true })
+        .order('id', { ascending: true });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    queueCache = data || [];
+    renderQueue();
 }
-function saveQueue(q) { localStorage.setItem(LS_KEY, JSON.stringify(q)); }
+
+if (supabaseClient) {
+    supabaseClient
+        .channel('queue-live')
+        .on(
+            'postgres_changes',
+            {
+                event: '*',
+                schema: 'public',
+                table: 'queue'
+            },
+            refreshQueue
+        )
+        .subscribe();
+}
 
 function renderQueue() {
-    const q = loadQueue();
+    const q = queueCache;
+
     const npEl = document.getElementById('npName');
     const listEl = document.getElementById('queueList');
     const emptyEl = document.getElementById('queueEmpty');
@@ -119,20 +186,39 @@ function renderQueue() {
     }
 
     const now = q[0];
-    npEl.textContent = `${now.name} — ${now.game} (${now.passLabel})`;
+
+    npEl.textContent =
+        `${now.name} — ${now.game} (${now.pass_label})`;
 
     listEl.innerHTML = '';
+
     q.slice(1).forEach((item, idx) => {
         const li = document.createElement('li');
+
         li.className = 'queue-item';
+
         li.innerHTML = `
             <span class="queue-num">${idx + 1}</span>
+
             <div class="queue-info">
-                <div class="queue-name">${escapeHtml(item.name)}</div>
-                <div class="queue-meta">${escapeHtml(item.game)} &bull; ${escapeHtml(item.passLabel)}</div>
+                <div class="queue-name">
+                    ${escapeHtml(item.name)}
+                </div>
+
+                <div class="queue-meta">
+                    ${escapeHtml(item.game)} &bull; ${escapeHtml(item.pass_label)}
+                </div>
             </div>
-            <button class="queue-remove" data-id="${item.id}" title="Remove">&times;</button>
+
+            <button
+                class="queue-remove staff-only"
+                data-id="${item.id}"
+                title="Remove"
+            >
+                &times;
+            </button>
         `;
+
         listEl.appendChild(li);
     });
 
@@ -146,28 +232,127 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-function addToQueue(name, game, pass) {
-    const q = loadQueue();
-    const passLabel = pass === '30min' ? '30 Min' : pass === '1hour' ? '1 Hour' : 'Rounds';
-    q.push({ id: Date.now() + Math.random(), name, game, pass, passLabel });
-    saveQueue(q);
-    renderQueue();
+
+async function addToQueue(name, game, pass) {
+    if (!supabaseClient) return;
+
+    const pass_label =
+        pass === '30min'
+            ? '30 Min'
+            : pass === '1hour'
+                ? '1 Hour'
+                : 'Rounds';
+
+    const { error } = await supabaseClient
+        .from('queue')
+        .insert({
+            name,
+            game,
+            pass,
+            pass_label
+        });
+
+    if (error) {
+        console.error(error);
+    }
 }
 
-function removeFromQueue(id) {
-    let q = loadQueue();
-    q = q.filter(item => item.id != id);
-    saveQueue(q);
-    renderQueue();
+async function removeFromQueue(id) {
+    if (!supabaseClient) return;
+
+    await supabaseClient
+        .from('queue')
+        .delete()
+        .eq('id', id);
 }
 
-function completeAndCallNext() {
-    let q = loadQueue();
-    if (q.length === 0) return;
-    q.shift();
-    saveQueue(q);
-    renderQueue();
+
+async function completeAndCallNext() {
+    if (!supabaseClient || queueCache.length === 0) return;
+
+    await supabaseClient
+        .from('queue')
+        .delete()
+        .eq('id', queueCache[0].id);
 }
+
+const staffBtn = document.getElementById('staffBtn');
+const staffLogin = document.getElementById('staffLogin');
+const staffLogout = document.getElementById('staffLogout');
+
+
+staffBtn?.addEventListener('click', () => {
+    staffLogin.style.display =
+        staffLogin.style.display === 'none'
+            ? 'flex'
+            : 'none';
+});
+
+
+document.getElementById('staffLoginBtn')?.addEventListener(
+    'click',
+    async () => {
+        if (!supabaseClient) return;
+
+        const email =
+            document.getElementById('staffEmail').value.trim();
+
+        const password =
+            document.getElementById('staffPassword').value;
+
+        const { error } =
+            await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
+
+        if (error) {
+            alert('Login failed: ' + error.message);
+        }
+    }
+);
+
+
+staffLogout?.addEventListener('click', async () => {
+    if (!supabaseClient) return;
+
+    await supabaseClient.auth.signOut();
+});
+
+
+if (supabaseClient) {
+    supabaseClient.auth.onAuthStateChange(
+        (event, session) => {
+            const isStaff = !!session;
+
+            document.body.classList.toggle(
+                'staff',
+                isStaff
+            );
+
+            if (staffBtn) {
+                staffBtn.style.display =
+                    isStaff ? 'none' : '';
+            }
+
+            if (staffLogout) {
+                staffLogout.style.display =
+                    isStaff ? '' : 'none';
+            }
+
+            if (isStaff && staffLogin) {
+                staffLogin.style.display = 'none';
+            }
+        }
+    );
+}
+
+
+document.getElementById('completeBtn')
+    ?.addEventListener(
+        'click',
+        completeAndCallNext
+    );
 
 const queueForm = document.getElementById('queueForm');
 const passSelect = document.getElementById('queuePass');
@@ -175,43 +360,72 @@ const gameSelect = document.getElementById('queueGame');
 const passHint = document.getElementById('passHint');
 
 function checkPassGame() {
-    const pass = passSelect.value;
-    const game = gameSelect.value;
-    const isLong = LONG_GAMES.includes(game);
-    if (isLong && pass === 'rounds') {
-        passHint.textContent = 'This game requires a 30 Min or 1 Hour pass.';
+    const isLong =
+        LONG_GAMES.includes(gameSelect.value);
+
+    if (
+        isLong &&
+        passSelect.value === 'rounds'
+    ) {
+        passHint.textContent =
+            'This game requires a 30 Min or 1 Hour pass.';
+
         return false;
-    } else {
-        passHint.textContent = '';
-        return true;
     }
+
+    passHint.textContent = '';
+    return true;
 }
 
 if (passSelect && gameSelect) {
-    passSelect.addEventListener('change', checkPassGame);
-    gameSelect.addEventListener('change', checkPassGame);
+    passSelect.addEventListener(
+        'change',
+        checkPassGame
+    );
+
+    gameSelect.addEventListener(
+        'change',
+        checkPassGame
+    );
 }
 
 if (queueForm) {
-    queueForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!checkPassGame()) return;
-        const name = document.getElementById('queueName').value.trim();
-        const game = gameSelect.value;
-        const pass = passSelect.value;
-        if (!name) return;
-        addToQueue(name, game, pass);
-        queueForm.reset();
-        checkPassGame();
-    });
+    queueForm.addEventListener(
+        'submit',
+        async (e) => {
+            e.preventDefault();
+
+            if (!checkPassGame()) return;
+
+            const name =
+                document
+                    .getElementById('queueName')
+                    .value
+                    .trim();
+
+            if (!name) return;
+
+            await addToQueue(
+                name,
+                gameSelect.value,
+                passSelect.value
+            );
+
+            queueForm.reset();
+            checkPassGame();
+        }
+    );
 }
 
-document.getElementById('completeBtn')?.addEventListener('click', completeAndCallNext);
+document.getElementById('queueList')
+    ?.addEventListener('click', (e) => {
+        const btn =
+            e.target.closest('.queue-remove');
 
-document.getElementById('queueList')?.addEventListener('click', (e) => {
-    if (e.target.classList.contains('queue-remove')) {
-        removeFromQueue(e.target.dataset.id);
-    }
-});
+        if (btn) {
+            removeFromQueue(btn.dataset.id);
+        }
+    });
 
-renderQueue();
+
+refreshQueue();
