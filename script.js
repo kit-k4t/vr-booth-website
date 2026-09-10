@@ -129,7 +129,7 @@ try {
 
 const LONG_GAMES = [
     "FNAF Sister Location VR",
-    "FNAF Ultimate Custom Night VR",
+    "Until You Fall",
     "Propagation VR"
 ];
 
