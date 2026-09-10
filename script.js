@@ -237,9 +237,11 @@ async function addToQueue(name, game, pass) {
     if (!supabaseClient) return;
 
     const pass_label =
-        pass === '30min'
-            ? '30 Min'
-            : pass === '1hour'
+        pass === '1round-special'
+            ? '1 round \u2014 special'
+            : pass === '30min'
+                ? '30 min'
+                : pass === '1hour'
                 ? '1 Hour'
                 : 'Rounds';
 
@@ -368,7 +370,7 @@ function checkPassGame() {
         passSelect.value === 'rounds'
     ) {
         passHint.textContent =
-            'This game requires a 30 Min or 1 Hour pass.';
+            'This game requires a special or timed pass.';
 
         return false;
     }
