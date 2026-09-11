@@ -242,8 +242,12 @@ async function addToQueue(name, game, pass) {
             : pass === '30min'
                 ? '30 min'
                 : pass === '1hour'
-                ? '1 Hour'
-                : 'Rounds';
+                    ? '1 Hour'
+                    : pass === 'rounds-20'
+                        ? 'Rounds (20)'
+                        : pass === 'rounds-50'
+                            ? 'Rounds (50)'
+                            : 'Rounds (75)';
 
     const { error } = await supabaseClient
         .from('queue')
